@@ -1,29 +1,31 @@
 ---
-slug: welcome
-title: Welcome
-authors: [slorber, yangshun]
-tags: [facebook, hello, docusaurus]
+slug: hello-blog
+title: 你好，博客！
+authors: carrie
+tags: [生活, 前端, 博客]
 ---
 
-[Docusaurus blogging features](https://docusaurus.io/docs/blog) are powered by the [blog plugin](https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-blog).
+欢迎来到我的个人博客！这是我用 [Docusaurus](https://docusaurus.io/zh-CN/docs/blog) 搭建的第一个博客项目。
 
-Here are a few tips you might find useful.
+这里会记录我的学习笔记、开发经验和一些生活感悟，也许还有前端与 GIS 的思考。
 
 <!-- truncate -->
 
-Simply add Markdown files (or folders) to the `blog` directory.
+### 为什么选择 Docusaurus？
 
-Regular blog authors can be added to `authors.yml`.
+- 支持 Markdown 写作
+- 自动生成静态站点
+- 本地开发体验好
+- 部署到 Vercel 非常方便！
 
-The blog post date can be extracted from filenames, such as:
+### 博客内容预告 📌
 
-- `2019-05-30-welcome.md`
-- `2019-05-30-welcome/index.md`
+- Vue 3 + Tailwind 项目经验
+- 地图可视化：Mapbox、deck.gl
+- GIS 学术研究与模型结构化总结
+- 技术杂谈与人生碎片记录
 
-A blog post folder can be convenient to co-locate blog post images:
+感谢你的到来，欢迎常来看看！
 
-![Docusaurus Plushie](./docusaurus-plushie-banner.jpeg)
+---
 
-The blog supports tags as well!
-
-**And if you don't want a blog**: just delete this directory, and use `blog: false` in your Docusaurus config.
