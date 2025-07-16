@@ -1,0 +1,9 @@
+{
+  "label": "HTTP",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "title": "HTTP 知识索引",
+    "slug": "/HTTP"
+  }
+}

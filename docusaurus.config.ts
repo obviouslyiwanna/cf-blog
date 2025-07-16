@@ -40,6 +40,12 @@ const config: Config = {
     [
       'classic',
       {
+        docs: {
+          sidebarPath: require.resolve('./sidebars.js'), // 关联上面配置
+          routeBasePath: '/docs', // 文档路径为 /docs/xxx
+          editUrl:
+            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+        },
         blog: {
           showReadingTime: true,
           feedOptions: {
@@ -59,6 +65,7 @@ const config: Config = {
           customCss: './src/css/custom.css',
         },
       } satisfies Preset.Options,
+      
     ],
   ],
 
@@ -73,6 +80,21 @@ const config: Config = {
       },
       items: [
         {to: '/blog', label: 'Blog', position: 'left'},
+        {
+          to: "/docs/HTTP/",
+          label: "HTTP",
+          position: "right",
+        },
+        {
+          to: "/docs/JavaScript/",
+          label: "JavaScript",
+          position: "right",
+        },
+        {
+          to: "/docs/Vue/",
+          label: "Vue",
+          position: "right",
+        },
         {
           href: 'https://gitee.com/carriefish',
           label: 'Gitee',
