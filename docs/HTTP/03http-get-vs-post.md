@@ -1,6 +1,6 @@
 ---
 title: GET 和 POST 有什么区别？
-tags: [HTTP, 前端面试, 网络协议]
+tags: [HTTP,  网络协议]
 ---
 
 ## 🌐 前言

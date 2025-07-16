@@ -1,6 +1,6 @@
 ---
 title: WebSocket 如何实现加密传输（WSS）？
-tags: [WebSocket, TLS, 网络安全, 前端面试]
+tags: [WebSocket, TLS, 网络安全]
 ---
 
 ## 🌐 什么是 WebSocket Secure（WSS）？
