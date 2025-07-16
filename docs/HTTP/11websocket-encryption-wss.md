@@ -118,11 +118,3 @@ Sec-WebSocket-Protocol: chat
 * 如何判断 WebSocket 是否安全可靠？
 
 ---
-
-## 📚 延伸阅读
-
-* [WebSocket 心跳与断线重连](./websocket-heartbeat-reconnect)
-* [TCP 三次握手与四次挥手](./tcp-handshake-termination)
-* [从 URL 到页面加载全过程](./url-to-page-loading)
-
-```

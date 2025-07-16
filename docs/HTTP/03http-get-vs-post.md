@@ -66,7 +66,3 @@ GET 和 POST 是 HTTP 协议中最常见的两种请求方式，在浏览器开�
 
 ---
 
-## 📚 延伸阅读
-
-- [浏览器输入 URL 到页面加载全过程](./url-to-page-loading)
-- [HTTP 状态码大全](./http-status-codes-guide)

@@ -154,11 +154,3 @@ function reconnect() {
 * 如何实现前端与后端的心跳逻辑协同？
 
 ---
-
-## 📚 延伸阅读
-
-* [TCP 三次握手与四次挥手](./tcp-handshake-termination)
-* [HTTP/2 与 WebSocket 区别](./http2-vs-websocket)
-* [从 URL 到页面加载全过程](./url-to-page-loading)
-
-```
