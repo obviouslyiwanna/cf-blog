@@ -1,6 +1,6 @@
 ---
 id: http-https
-slug: /HTTP/http-https
+slug: /HTTP/00http-https
 title: HTTP/HTTPS 定义和区别
 authors: carrie
 tags: [HTTP,HTTPS]
@@ -130,5 +130,5 @@ openssl req -x509 -newkey rsa:2048 -nodes -keyout key.pem -out cert.pem -days 36
 4. **描述从输入URL到页面加载的HTTPS过程**
    （考察TCP连接 + SSL握手 + 资源请求全流程）
 
-![HTTPS](image.png)
+![HTTPS](image-0.png)
 > 📌 **面试技巧**：结合具体场景回答，如："在我的电商项目中，支付模块必须使用HTTPS来防止..."
