@@ -1,5 +1,4 @@
 ---
-slug: source-map-intro
 title: 前端中的 Source Map 是什么？
 authors: kaykay
 tags: [前端, 调试, 构建工具, sourcemap]

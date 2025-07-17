@@ -1,5 +1,4 @@
 ---
-slug: eslint-intro
 title: ESLint 概念与工作原理解析
 authors: kaykay
 tags: [前端, 代码规范, eslint, AST, 静态分析]
