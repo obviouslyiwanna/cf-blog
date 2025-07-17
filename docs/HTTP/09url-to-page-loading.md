@@ -12,6 +12,7 @@ tags: [浏览器原理, 网络协议]
 ![alt text](image-2.png)
 ![alt text](image-3.png)
 ![alt text](image-4.png)
+
 ---
 
 ## 🌐 二、详细流程拆解
