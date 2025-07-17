@@ -1,0 +1,10 @@
+{
+  "label": "webpack",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "title": "webpack 知识索引",
+    // "description": "这里整理了关于 OSI 模型、JavaScript 协议等内容。",
+    "slug": "/webpack"
+  }
+}
