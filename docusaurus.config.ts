@@ -92,7 +92,7 @@ const config: Config = {
         },
         {
           to: "/docs/webpack/",
-          label: "Webpack",
+          label: "webpack",
           position: "right",
         },
         // {
