@@ -95,6 +95,11 @@ const config: Config = {
           label: "webpack",
           position: "right",
         },
+        {
+          to: "/docs/css/",
+          label: "css",
+          position: "right",
+        },
         // {
         //   to: "/docs/Vue/",
         //   label: "Vue",
