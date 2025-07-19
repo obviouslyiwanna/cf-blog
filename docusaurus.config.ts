@@ -100,11 +100,11 @@ const config: Config = {
           label: "css",
           position: "right",
         },
-        // {
-        //   to: "/docs/Vue/",
-        //   label: "Vue",
-        //   position: "right",
-        // },
+        {
+          to: "/docs/Vue/",
+          label: "Vue",
+          position: "right",
+        },
         {
           href: 'https://gitee.com/carriefish',
           label: 'Gitee',
