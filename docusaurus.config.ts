@@ -106,6 +106,11 @@ const config: Config = {
           position: "right",
         },
         {
+          to: "/docs/毕业论文/",
+          label: "毕业论文",
+          position: "right",
+        },
+        {
           href: 'https://gitee.com/carriefish',
           label: 'Gitee',
           position: 'right',
