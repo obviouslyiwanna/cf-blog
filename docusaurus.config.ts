@@ -81,6 +81,11 @@ const config: Config = {
       items: [
         {to: '/blog', label: 'Blog', position: 'left'},
         {
+          to: "/docs/八股总结/",
+          label: "八股总结",
+          position: "right",
+        },
+        {
           to: "/docs/HTTP/",
           label: "HTTP",
           position: "right",
