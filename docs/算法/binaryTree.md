@@ -446,4 +446,62 @@ var maxPathSum = function (root) {
     return maxSum;
 };
 ```
- 
+ 987. 二叉树的垂序遍历
+给你二叉树的根结点 root ，请你设计算法计算二叉树的 垂序遍历 序列。
+
+对位于 (row, col) 的每个结点而言，其左右子结点分别位于 (row + 1, col - 1) 和 (row + 1, col + 1) 。树的根结点位于 (0, 0) 。
+
+二叉树的 垂序遍历 从最左边的列开始直到最右边的列结束，按列索引每一列上的所有结点，形成一个按出现位置从上到下排序的有序列表。如果同行同列上有多个结点，则按结点的值从小到大进行排序。
+
+返回二叉树的 垂序遍历 序列。
+![alt text](image-1.png)
+- 主要思路是去记录每个结点的值、行坐标和列坐标，再分别按列坐标和行坐标排序
+- 最后分组输出结果
+```js
+var verticalTraversal = function(root) {
+    if (!root) return [];
+    
+    const nodes = [];
+    
+    // DFS遍历树，记录每个节点的值、行号和列号
+    function dfs(node, row, col) {
+        if (!node) return;
+        nodes.push({val: node.val, row, col});
+        dfs(node.left, row + 1, col - 1);
+        dfs(node.right, row + 1, col + 1);
+    }
+    
+    dfs(root, 0, 0);
+    
+    // 排序
+    nodes.sort((a, b) => {
+        if (a.col !== b.col) return a.col - b.col;  // 先按列排序
+        if (a.row !== b.row) return a.row - b.row;  // 同列按行排序
+        return a.val - b.val;                       // 同行同列按值排序
+    });
+    
+    // 分组输出
+    const result = [];
+    let currentCol = null;
+    let currentGroup = [];
+    
+    for (const node of nodes) {
+        if (node.col !== currentCol) {
+            if (currentGroup.length > 0) {
+                result.push(currentGroup.map(n => n.val));
+            }
+            currentCol = node.col;
+            currentGroup = [node];
+        } else {
+            currentGroup.push(node);
+        }
+    }
+    
+    // 添加最后一组
+    if (currentGroup.length > 0) {
+        result.push(currentGroup.map(n => n.val));
+    }
+    
+    return result;
+};
+```
