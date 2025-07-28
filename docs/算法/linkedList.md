@@ -106,3 +106,135 @@ var detectCycle = function (head) {
     return null;
 };
 ```
+21. 合并两个有序链表
+将两个升序链表合并为一个新的 升序 链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。 
+- 思路是类似于归并排序
+```js
+var mergeTwoLists = function (list1, list2) {
+    const dummy = new ListNode(-1);
+    let cur = dummy;
+    while (list1 && list2) {
+        if (list1.val < list2.val) {
+            cur.next = list1;
+            list1 = list1.next;
+        }
+        else {
+            cur.next = list2;
+            list2 = list2.next;
+        }
+        cur = cur.next;
+    }
+    cur.next = list1 || list2;
+    return dummy.next;
+};
+```
+
+19. 删除链表的倒数第 N 个结点
+给你一个链表，删除链表的倒数第 n 个结点，并且返回链表的头结点。
+- 思路：快指针先走N步，然后和慢指针一起往后走到底，当 fast 走到末尾时，slow 正好指向倒数第 n+1 个节点，直接 slow.next = slow.next.next 即可删除倒数第 n 个节点。
+```js
+var removeNthFromEnd = function (head, n) {
+    const dummy = new ListNode(-1);
+    dummy.next = head;
+    let fast = dummy, slow = dummy;
+    for (let i = 0; i < n; i++) {
+        if (!fast) return head;
+        fast = fast.next;
+    }
+    while (fast && fast.next) {
+        fast = fast.next;
+        slow = slow.next;
+    }
+    slow.next = slow.next.next;
+    return dummy.next;
+};
+```
+24. 两两交换链表中的节点
+给你一个链表，两两交换其中相邻的节点，并返回交换后链表的头节点。你必须在不修改节点内部的值的情况下完成本题（即，只能进行节点交换）。
+- 递归调用法:既然是1-2-3-4变成2-1-4-3，那么可以用递归去两两解决问题，初始化first=head,seond=head.next,但是实际上first.next应该指向第三个值了，也就是原本的second.next,而原本second.next应该指向前面
+```js
+var swapPairs = function (head) {
+    if (!head || !head.next) return head;
+    const first = head;
+    const second = head.next;
+
+    first.next = swapPairs(second.next);
+    second.next = first;
+
+    return second;
+};
+```
+- 迭代法：
+使用虚拟头节点（dummy）：简化头节点的交换操作。
+
+维护三个指针：
+
+prev：指向当前要交换的两个节点的前一个节点。
+
+first：指向第一个要交换的节点。
+
+second：指向第二个要交换的节点。
+
+交换过程：
+
+prev.next 指向 second。
+
+first.next 指向 second.next。
+
+second.next 指向 first。
+
+移动指针：
+
+prev 移动到 first（因为 first 已经是交换后的第二个节点）。
+
+```js
+var swapPairs = function (head) {
+    const dummy = new ListNode(-1);
+    dummy.next = head;
+    let prev = dummy;
+    while (prev.next && prev.next.next) {
+        const first = prev.next;
+        const second = prev.next.next;
+        prev.next = second;
+        first.next = second.next;
+        second.next = first;
+        prev = first;
+    }
+    return dummy.next;
+};
+```
+148. 排序链表
+给你链表的头结点 head ，请将其按 升序 排列并返回 排序后的链表 。
+- 分割链表：每次找到链表的中点需要 O(n) 时间（通过快慢指针）。
+
+递归排序：每次递归将链表分成两半，递归深度为 O(log n)。
+
+合并链表：合并两个有序链表的时间是 O(n)。
+
+```js
+var sortList = function (head) {
+    if (!head || !head.next) return head;
+    let slow = head, fast = head, prev = null;
+    while (fast && fast.next) {
+        prev = slow;
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+    prev.next = null;
+    const left = sortList(head);
+    const right = sortList(slow);
+    return merge(left, right);
+};
+function merge(list1, list2) {
+    if (!list1) return list2;
+    else if (!list2) return list1;
+    else if (list1.val < list2.val) {
+        list1.next = merge(list1.next, list2);
+        return list1;
+    }
+    else {
+        list2.next = merge(list2.next, list1);
+        return list2;
+    }
+}
+```
