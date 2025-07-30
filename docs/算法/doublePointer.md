@@ -38,3 +38,69 @@ var maxArea = function (height) {
     return ans;
 };
 ```
+15. 三数之和
+给你一个整数数组 nums ，判断是否存在三元组 [nums[i], nums[j], nums[k]] 满足 i != j、i != k 且 j != k ，同时还满足 nums[i] + nums[j] + nums[k] == 0 。请你返回所有和为 0 且不重复的三元组。
+
+注意：答案中不可以包含重复的三元组。 去重的话就是分别对i,left,right及其临近的元素进行去重。
+- 思路：先对数组进行**排序**，然后使用双指针，一个指针指向当前遍历的位置，一个指针指向左边的位置，一个指针指向右边的位置。
+- 然后根据当前的和，判断是否等于0，如果等于0，那么就将当前的三元组加入到结果数组中。
+- 如果当前的和小于0，那么就将左指针向右移动一位。
+- 如果当前的和大于0，那么就将右指针向左移动一位。
+- 最后返回结果数组。
+
+```js
+var threeSum = function (nums) {
+    let res = [];
+    const n = nums.length;
+    nums.sort((a, b) => a - b);
+    
+    for (let i = 0; i < n; i++) {
+        if (nums[0] > 0) break;
+        if (i > 0 && nums[i] === nums[i - 1]) continue;
+
+        let left = i + 1, right = n - 1;
+        while (left < right) {
+            let sum = nums[i] + nums[left] + nums[right];
+            if (sum > 0) right--;
+            else if (sum < 0) left++;
+            else {
+                res.push([nums[i], nums[left], nums[right]]);
+                while (right > left && nums[right] === nums[right - 1]) right--;
+                while (right > left && nums[left] === nums[left + 1]) left++;
+                left++;
+                right--;
+            }
+        }
+    }
+
+    return res;
+};
+```
+**42. 接雨水**
+给定 n 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。
+![alt text](image-3.png)
+- 前缀和后缀
+- 维护一个前缀最大值和后缀最大值
+- 取前缀最大值和后缀最大值的较小值，减去当前的高度，就是当前的接雨水量
+```js
+var trap = function(height) {
+    const n = height.length;
+    const preMax = Array(n); 
+    preMax[0] = height[0];
+    for (let i = 1; i < n; i++) {
+        preMax[i] = Math.max(preMax[i - 1], height[i]);
+    }
+
+    const sufMax = Array(n); 
+    sufMax[n - 1] = height[n - 1];
+    for (let i = n - 2; i >= 0; i--) {
+        sufMax[i] = Math.max(sufMax[i + 1], height[i]);
+    }
+
+    let ans = 0;
+    for (let i = 0; i < n; i++) {
+        ans += Math.min(preMax[i], sufMax[i]) - height[i]; 
+    }
+    return ans;
+};
+```

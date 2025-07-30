@@ -238,3 +238,183 @@ function merge(list1, list2) {
     }
 }
 ```
+138：复制带随机指针的链表（Copy List with Random Pointer）
+题目描述：
+给定一个链表的头节点 head，链表的每个节点除了 val 和 next 指针外，还有一个 random 指针，它可能指向链表中的任意节点，也可能为 null。
+要求：深拷贝这个链表，并返回新链表的头节点。
+-  第一次遍历：创建所有新节点，并建立原节点到新节点的映射 第二次遍历：设置新链表的next和random指针
+```js 
+var copyRandomList = function (head) {
+    if (!head) return null;
+    const map = new Map();
+
+    let curr = head;
+    while (curr) {
+        map.set(curr, new Node(curr.val));
+        curr = curr.next;
+    }
+
+    curr = head;
+    while (curr) {
+        map.get(curr).next = map.get(curr.next) || null;
+        map.get(curr).random = map.get(curr.random) || null;
+        curr = curr.next;
+    }
+
+    return map.get(head)
+};
+```
+23. 合并 K 个升序链表
+
+请你将所有链表合并到一个升序链表中，返回合并后的链表。
+- 分治法：将 k 个链表分成两半，递归合并，最后合并两个有序链表。
+
+```js
+var mergeKLists = function (lists) {
+    if (!lists || lists.length === 0) return null;
+
+    return mergeLists(lists, 0, lists.length - 1);
+};
+
+function mergeLists(lists, left, right) {
+    if (left === right) return lists[left];
+
+    const mid = (left + right) >>> 1;
+    const l1 = mergeLists(lists, left, mid);
+    const l2 = mergeLists(lists, mid + 1, right);
+
+    return merge2Lists(l1, l2);
+}
+
+function merge2Lists(list1, list2) {
+    const dummy = new ListNode(-1);
+
+    let cur = dummy;
+    while (list1 && list2) {
+        if (list1.val < list2.val) {
+            cur.next = list1;
+            list1 = list1.next;
+        } else {
+            cur.next = list2;
+            list2 = list2.next;
+        }
+        cur = cur.next;
+    }
+
+    cur.next = list1 || list2;
+
+    return dummy.next;
+}
+```
+25. K 个一组翻转链表
+给你链表的头节点 head ，每 k 个节点一组进行翻转，请你返回修改后的链表。
+
+k 是一个正整数，它的值小于或等于链表的长度。如果节点总数不是 k 的整数倍，那么请将最后剩余的节点保持原有顺序。
+
+你不能只是单纯的改变节点内部的值，而是需要实际进行节点交换。
+- k个一组的进行翻转，每次翻转完将p0.next的next指向current，p0的next指向pre
+![alt text](image-5.png)
+![alt text](image-4.png)
+```js
+var reverseKGroup = function (head, k) {
+    let n = 0;
+    for (let cur = head; cur; cur = cur.next) n++;
+    
+    const dummy = new ListNode(0, head);
+    let p0 = dummy;
+    let pre = null;
+    let cur = head;
+    for (; n >= k; n -= k) {
+        for (let i = 0; i < k; i++) {
+            const next = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = next;
+        }
+
+        const next = p0.next;
+        p0.next.next = cur;
+        p0.next = pre;
+        p0 = next;
+    }
+    
+    return dummy.next;
+};
+```
+146. LRU 缓存
+请你设计并实现一个满足  LRU (最近最少使用) 缓存 约束的数据结构。
+实现 LRUCache 类：
+LRUCache(int capacity) 以 正整数 作为容量 capacity 初始化 LRU 缓存
+int get(int key) 如果关键字 key 存在于缓存中，则返回关键字的值，否则返回 -1 。
+void put(int key, int value) 如果关键字 key 已经存在，则变更其数据值 value ；如果不存在，则向缓存中插入该组 key-value 。如果插入操作导致关键字数量超过 capacity ，则应该 逐出 最久未使用的关键字。
+函数 get 和 put 必须以 O(1) 的平均时间复杂度运行。
+
+- 哈希表 + 双向链表 
+![alt text](image-6.png)
+```js
+class Node {
+    constructor(key, val) {
+        this.key = key;
+        this.val = val;
+        this.prev = null;
+        this.next = null;
+    }
+}
+
+class LRUCache {
+    constructor(capacity) {
+        this.capacity = capacity;
+        this.map = new Map();
+        this.head = new Node(-1, -1);
+        this.tail = new Node(-1, -1);
+        this.head.next = this.tail;
+        this.tail.prev = this.head;
+    }
+
+    addToHead(node) {
+        node.next = this.head.next;
+        node.prev = this.head;
+        this.head.next.prev = node;
+        this.head.next = node;
+    }
+
+    removeNode(node) {
+        node.prev.next = node.next;
+        node.next.prev = node.prev;
+    }
+
+    moveToHead(node) {
+        this.removeNode(node);
+        this.addToHead(node);
+    }
+
+    removeTail() {
+        const tailNode = this.tail.prev;
+        this.removeNode(tailNode);
+        return tailNode.key;
+    }
+
+    get(key) {
+        if (!this.map.has(key)) return -1;
+        const node = this.map.get(key);
+        this.moveToHead(node);
+        return node.val;
+    }
+
+    put(key, value) {
+        if (this.map.has(key)) {
+            const node = this.map.get(key);
+            node.val = value;
+            this.moveToHead(node);
+        } else {
+            const newNode = new Node(key, value);
+            this.map.set(key, newNode);
+            this.addToHead(newNode);
+            if (this.map.size > this.capacity) {
+                const tailKey = this.removeTail();
+                this.map.delete(tailKey);
+            }
+        }
+    }
+}
+```

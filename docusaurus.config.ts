@@ -111,6 +111,11 @@ const config: Config = {
           position: "right",
         },
         {
+          to: "/docs/算法/",
+          label: "算法",
+          position: "right",
+        },
+        {
           to: "/docs/毕业论文/",
           label: "毕业论文",
           position: "right",
