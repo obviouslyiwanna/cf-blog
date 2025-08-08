@@ -141,6 +141,7 @@ function findKth(nums1, nums2, k) {
     }
 }
 ```
+
 33. 搜索旋转排序数组
 整数数组 nums 按升序排列，数组中的值 互不相同 。
 

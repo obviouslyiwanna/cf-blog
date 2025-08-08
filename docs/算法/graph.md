@@ -236,3 +236,64 @@ var findOrder = function(numCourses, prerequisites) {
     return order.length === numCourses ? order : [];
 };
 ```
+
+208. 实现 Trie (前缀树)
+Trie（发音类似 "try"）或者说 前缀树 是一种树形数据结构，用于高效地存储和检索字符串数据集中的键。这一数据结构有相当多的应用情景，例如自动补全和拼写检查。
+
+请你实现 Trie 类：
+
+Trie() 初始化前缀树对象。
+void insert(String word) 向前缀树中插入字符串 word 。
+boolean search(String word) 如果字符串 word 在前缀树中，返回 true（即，在检索之前已经插入）；否则，返回 false 。
+boolean startsWith(String prefix) 如果之前已经插入的字符串 word 的前缀之一为 prefix ，返回 true ；否则，返回 false 。
+
+```js
+// Trie节点类
+class TrieNode {
+    constructor() {
+        this.children = new Map();  // 使用Map存储子节点，键是字符，值是子TrieNode
+        this.isEnd = false;       // 标记当前节点是否是某个单词的结尾
+    }
+}
+
+// Trie树类
+class Trie {
+    constructor() {
+        this.root = new TrieNode();  // 创建根节点
+    }
+
+    // 向Trie中插入一个单词
+    insert(word) {
+        let node = this.root;  // 从根节点开始
+        for (const char of word) {  // 遍历单词的每个字符
+            if (!node.children.has(char)) {  // 如果当前字符不存在于子节点中
+                node.children.set(char, new TrieNode());  // 创建一个新的子节点
+            }
+            node = node.children.get(char);  // 移动到对应的子节点
+        }
+        node.isEnd = true;  // 标记最后一个节点为单词结尾
+    }
+
+    // 私有方法：沿着给定单词遍历Trie，返回最终节点或null
+    #traverse(word) {
+        let node = this.root;  // 从根节点开始
+        for (const char of word) {  // 遍历单词的每个字符
+            if (!node.children.has(char)) return null;  // 如果字符不存在，返回null
+            node = node.children.get(char);  // 移动到对应的子节点
+        }
+        return node;  // 返回最终到达的节点
+    }
+
+    // 搜索完整单词是否存在于Trie中
+    search(word) {
+        const node = this.#traverse(word);  // 获取单词对应的节点
+        return node !== null && node.isEnd;  // 节点存在且是单词结尾才返回true
+    }
+
+    // 检查Trie中是否有以给定前缀开头的单词
+    startsWith(prefix) {
+        return this.#traverse(prefix) !== null;  // 只要前缀对应的路径存在就返回true
+    }
+}
+
+```
