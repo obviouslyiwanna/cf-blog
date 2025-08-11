@@ -505,3 +505,71 @@ var verticalTraversal = function(root) {
     return result;
 };
 ```
+212. 单词搜索 II
+给定一个 m x n 二维字符网格 board 和一个单词（字符串）列表 words， 返回所有二维网格上的单词 。
+
+单词必须按照字母顺序，通过 相邻的单元格 内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。同一个单元格内的字母在一个单词中不允许被重复使用。
+![alt text](image-19.png)
+- 方法Trie（字典树） + DFS 回溯（推荐）
+构建 Trie：将 words 中的所有单词插入字典树，方便快速匹配前缀。
+
+DFS 搜索：遍历 board 的每个单元格，以该单元格为起点，在 Trie 中搜索可能的单词。
+
+剪枝优化：如果当前路径不在 Trie 中，提前终止搜索。
+```js
+class TrieNode {
+    constructor() {
+        this.children = {};
+        this.word = null;
+    }
+}
+
+function buildTrie(words) {
+    const root = new TrieNode();
+    for (const word of words) {
+        let node = root;
+        for (const char of word) {
+            if (!node.children[char]) {
+                node.children[char] = new TrieNode();
+            }
+            node = node.children[char];
+        }
+        node.word = word;
+    }
+    return root;
+}
+
+function findWords(board, words) {
+    const result = [];
+    const trie = buildTrie(words);
+    const m = board.length, n = board[0].length;
+
+    const dfs = (i, j, node) => {
+        if (i < 0 || i >= m || j < 0 || j >= n || board[i][j] === '#') {
+            return;
+        }
+        const char = board[i][j];
+        if (!node.children[char]) {
+            return;
+        }
+        const nextNode = node.children[char];
+        if (nextNode.word !== null) {
+            result.push(nextNode.word);
+            nextNode.word = null; // 避免重复添加
+        }
+        board[i][j] = '#';
+        dfs(i + 1, j, nextNode);
+        dfs(i - 1, j, nextNode);
+        dfs(i, j + 1, nextNode);
+        dfs(i, j - 1, nextNode);
+        board[i][j] = char;
+    };
+
+    for (let i = 0; i < m; i++) {
+        for (let j = 0; j < n; j++) {
+            dfs(i, j, trie);
+        }
+    }
+    return result.sort();
+}
+```

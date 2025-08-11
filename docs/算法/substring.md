@@ -128,3 +128,45 @@ var maxSlidingWindow = function(nums, k) {
 
 - 方法：滑动窗口 + 哈希表
 使用滑动窗口技术结合哈希表统计字符频率，动态扩展和收缩窗口以寻找最优解。
+```js
+var minWindow = function (s, t) {
+    const need = {};// t的字符频率
+    const window = {}; // 滑动窗口内的字符频率
+
+    for (const c of t) {
+        need[c] = (need[c] || 0) + 1; 
+    }
+
+    let left = 0, right = 0;
+    let valid = 0;
+    let minLen = Infinity, start = 0;
+
+    while (right < s.length) {
+        const c = s[right];
+        right++;
+
+        if (need[c]) {
+            window[c] = (window[c] || 0) + 1;
+            if (window[c] === need[c]) {
+                valid++;
+            }
+        }
+
+        while (valid === Object.keys(need).length) {
+            if (right - left < minLen) {
+                minLen = right - left;
+                start = left;
+            }
+            const d = s[left];
+            left++;
+            if (need[d]){
+                if (window[d] === need[d]) {
+                    valid--;
+                }
+                window[d]--;
+            }
+        }
+    }
+    return minLen === Infinity ? '' : s.substr(start, minLen);
+};
+```
