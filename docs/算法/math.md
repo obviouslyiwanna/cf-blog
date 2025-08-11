@@ -186,9 +186,9 @@ var findDuplicate = function (nums) {
 
 统计数量：对于某个中间值 mid，统计数组中小于等于 mid 的数字的个数。
 
-如果没有重复数字，<= mid 的数字个数应该正好是 mid 个。
+如果没有重复数字，那么数组中小于等于 mid 的数字个数应该正好是 mid 个。
 
-如果有重复数字，<= mid 的数字个数可能会多于 mid 个。
+如果有重复数字，那么数组中小于等于 mid 的数字个数可能会多于 mid 个。
 
 ```js
 var findDuplicate = function (nums) {

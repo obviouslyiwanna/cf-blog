@@ -42,10 +42,11 @@ var canJump = function (nums) {
 
 每个元素 nums[i] 表示从索引 i 向后跳转的最大长度。换句话说，如果你在 nums[i] 处，你可以跳转到任意 nums[i + j] 处:
 
+```
 0 <= j <= nums[i] 
 i + j < n
 返回到达 nums[n - 1] 的最小跳跃次数。生成的测试用例可以到达 nums[n - 1]。
-
+```
 - 更新下一次跳跃范围：nextCover = Math.max(nextCover, i + nums[i])
 计算从当前位置i能跳到的最远位置，并更新nextCover
 
