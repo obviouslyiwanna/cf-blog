@@ -24,15 +24,36 @@ var twoSum = function (nums, target) {
 - 去设置一个key是排序后的，遍历过程中，如果是一致的那就加入当前这个key分组的[]中。
 ```js
 var groupAnagrams = function (strs) {
-    const map=new Map();
-    for(const s of strs){
-        let sorted=s.split('').sort().join('');
-        if(!map.has(sorted)) map.set(sorted,[]);
+    const map = new Map();
+    for (const s of strs) {
+        let sorted = s.split('').sort().join('');
+        if (!map.has(sorted)) {
+            map.set(sorted, []);
+        }
         map.get(sorted).push(s);
     }
     return [...map.values()];
 };
 ```
+- 去计算每个s里面的26个字母的数量，然后将这个数量作为key，将s加入到当前key分组的[]中。
+```js
+var groupAnagrams = function (strs) {
+    const map = new Map();
+    for (const s of strs) {
+        const count = new Array(26).fill(0);
+        for (const c of s) {
+            count[c.charCodeAt() - 97]++;
+        }
+        const key = count.join('#');
+        if (!map[key]) {
+            map[key] = [];
+        }
+        map[key].push(s);
+    }
+    return Object.values(map);
+};
+```
+
 128. 最长连续序列
 给定一个未排序的整数数组 nums ，找出数字连续的最长序列（不要求序列元素在原数组中连续）的长度。
 
