@@ -7,19 +7,16 @@
 
 ```js
 var searchInsert = function (nums, target) {
-  const n = nums.length
-
-  let left = 0,
-    right = n - 1
-  while (left <= right) {
-    let mid = (left + right) >>> 1
-    if (nums[mid] === target) return mid
-    else if (nums[mid] > target) right = mid - 1
-    else left = mid + 1
-  }
-
-  return left
-}
+    const n = nums.length;
+    let left = 0, right = n;
+    while (left < right) {
+        let mid = (left + right) >>> 1;
+        if (nums[mid] === target) return mid;
+        else if (nums[mid] > target) right = mid;
+        else left = mid + 1;
+    }
+    return left;
+};
 ```
 
 74. 搜索二维矩阵
@@ -33,21 +30,19 @@ var searchInsert = function (nums, target) {
 
 ```js
 var searchMatrix = function (matrix, target) {
-  const m = matrix.length,
-    n = matrix[0].length
-  let left = 0,
-    right = m * n - 1 // 将二维矩阵视为一维数组
+    const m = matrix.length, n = matrix[0].length;
+    let left = 0, right = m * n;
 
-  while (left <= right) {
-    const mid = Math.floor((left + right) / 2)
-    const midVal = matrix[Math.floor(mid / n)][mid % n] // 将一维索引转为二维坐标
+    while (left < right) {
+        const mid = (left + right) >>> 1;
+        const midVal = matrix[Math.floor(mid / n)][mid % n];
 
-    if (target === midVal) return true
-    else if (target > midVal) left = mid + 1
-    else right = mid - 1
-  }
-  return false
-}
+        if (target === midVal) return true;
+        else if (midVal > target) right = mid;
+        else left = mid + 1;
+    }
+    return false;
+};
 ```
 
 34. 在排序数组中查找元素的第一个和最后一个位置
@@ -61,29 +56,25 @@ var searchMatrix = function (matrix, target) {
 
 ```js
 var searchRange = function (nums, target) {
-  const left = findBound(nums, target, true);
-  const right = findBound(nums, target, false);
-  return [left, right];
-}
+    const left = findBound(nums, target, true);
+    const right = findBound(nums, target, false);
+    return [left, right];
+};
+const findBound = (nums, target, isLeft) => {
+    let left = 0, right = nums.length;
+    let bound = -1;
 
-function findBound(nums, target, isLeft) {
-  let left = 0,
-    right = nums.length - 1;
-  let bound = -1;
-
-  while (left <= right) {
-    const mid = (left + right) >>> 1;
-    if (nums[mid] === target) {
-      bound = mid; // 记录当前找到的位置
-      if (isLeft) {
-        right = mid - 1; // 继续向左找更小的左边界
-      } else {
-        left = mid + 1; // 继续向右找更大的右边界
-      }
-    } else if (nums[mid] < target) left = mid + 1;
-    else right = mid - 1;
-  }
-  return bound;
+    while (left < right) {
+        const mid = (left + right) >>> 1;
+        if (nums[mid] === target) {
+            bound = mid;
+            if (isLeft) {
+                right = mid;
+            } else left = mid + 1;
+        } else if (nums[mid] < target) left = mid + 1;
+        else right = mid;
+    }
+    return bound;
 }
 ```
 4. 寻找两个正序数组的中位数

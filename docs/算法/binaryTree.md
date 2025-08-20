@@ -205,6 +205,21 @@ var kthSmallest = function (root, k) {
   return ans
 }
 ```
+- 用栈迭代模拟中序遍历
+```js
+var kthSmallest = function (root, k) {
+    const stack = [];
+    while (root || stack.length) {
+        while (root) {
+            stack.push(root);
+            root = root.left;
+        }
+        root = stack.pop();
+        if (--k === 0) return root.val;
+        root = root.right;
+    }
+};
+```
 
 199. 二叉树的右视图
      给定一个二叉树的 根节点 root，想象自己站在它的右侧，按照从顶部到底部的顺序，返回从右侧所能看到的节点值。
@@ -232,6 +247,7 @@ var rightSideView = function (root) {
 ```
 
 114. 二叉树展开为链表
+给你二叉树的根结点 root ，请你将它展开为一个单链表：
 
 展开后的单链表应该同样使用 TreeNode ，其中 right 子指针指向链表中下一个结点，而左子指针始终为 null 。
 展开后的单链表应该与二叉树 先序遍历 顺序相同。
@@ -270,6 +286,26 @@ const preorderTraversal = (root, stack = []) => {
   }
   return stack
 }
+```
+
+- 头插法 先得到当前的二叉树的后序遍历，然后再一个一个头插法，就可以得到展开后的链表
+![alt text](image-20.png)
+```js
+var flatten = function (root) {
+    let prev = null;
+
+    const reversePostorder = (node) => {
+        if (!node) return;
+
+        reversePostorder(node.right);
+        reversePostorder(node.left);
+
+        node.right = prev;
+        node.left = null;
+        prev = node;
+    }
+    reversePostorder(root);
+};
 ```
 
 105. 从前序与中序遍历序列构造二叉树
@@ -388,25 +424,22 @@ var pathSum = function (root, targetSum) {
 
 ```js
 var pathSum = function (root, targetSum) {
-  let ans = 0
-  if (!root) return 0
-  function dfs(node, currentSum) {
-    if (!node) return
-    currentSum += node.val
-    if (currentSum === targetSum) ans++
-    dfs(node.left, currentSum)
-    dfs(node.right, currentSum)
-  }
-  function traversal(node) {
-    if (!node) return
-    dfs(node, 0)
-    traversal(node.left)
-    traversal(node.right)
-  }
-  traversal(root)
-  return ans
-}
+    if (!root) return 0;
+
+    const countFromNode = (node, currentSum) => {
+        if (!node) return 0;
+        currentSum += node.val;
+        return (currentSum === targetSum ? 1 : 0)
+            + countFromNode(node.left, currentSum) + countFromNode(node.right, currentSum);
+    }
+
+    return countFromNode(root, 0) + pathSum(root.left, targetSum) + pathSum(root.right, targetSum);
+};
+
 ```
+
+- 前缀和+哈希表优化
+
 236. 二叉树的最近公共祖先
 给定一个二叉树, 找到该树中两个指定节点的最近公共祖先。
 

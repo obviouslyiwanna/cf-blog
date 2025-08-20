@@ -203,8 +203,41 @@ var canFinish = function (numCourses, prerequisites) {
     return true;
 };
 ```
+
+- 拓扑排序
+```js
+var canFinish = function (numCourses, prerequisites) {
+    const graph = new Array(numCourses).fill(0).map(() => []);
+    const indegree = new Array(numCourses).fill(0);
+
+    for (const [course, prereq] of prerequisites) {
+        graph[prereq].push(course);
+        indegree[course]++;
+    }
+
+    const queue = [];
+    for (let i = 0; i < numCourses; i++) {
+        if (indegree[i] === 0) queue.push(i);
+    }
+
+    let count = 0;
+    while (queue.length) {
+        const cur = queue.shift();
+        count++;
+        for (const next of graph[cur]) {
+            indegree[next]--;
+            if (indegree[next] === 0) queue.push(next);
+        }
+    }
+
+    return count === numCourses;
+};
+```
+
 210.课程2
-输出序列 每次shift的时候用order结果数组去接一下
+输出序列 
+
+- 拓扑排序 每次shift的时候用order结果数组去接一下
 ```js
 var findOrder = function(numCourses, prerequisites) {
     const graph = new Array(numCourses).fill(0).map(() => []);
