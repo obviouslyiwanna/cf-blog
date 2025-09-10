@@ -22,7 +22,7 @@
 var climbStairs = function (n) {
     if (n === 1) return 1;
     if (n === 2) return 2;
-    let dp = Array(n);
+    let dp = Array(n+1);
     dp[0] = 1, dp[1] = 1, dp[2] = 2;
     for (let i = 3; i <= n; i++) {
         dp[i] = dp[i - 1] + dp[i - 2];
@@ -30,10 +30,27 @@ var climbStairs = function (n) {
     return dp[n];
 };
 ```
+- 优化 用两个数来存最近两个状态，本质是斐波那契数列
+```js
+var climbStairs = function (n) {
+    if (n <= 2) return n;
+
+    let prev1 = 2, prev2 = 1;
+
+    for (let i = 3; i <= n; i++) {
+        let cur = prev1 + prev2;
+        prev2 = prev1;
+        prev1 = cur;
+    }
+    return prev1;
+};
+```
 
 118. 杨辉三角
-给定一个非负整数 numRows，生成「杨辉三角」的前 numRows 行。
-![alt text](image-16.png)
+给定一个非负整数 numRows，生成「杨辉三角」的前 numRows 行。  
+
+![alt text](image-16.png)  
+
 - 动态规划 **数组表示当前行的数字**,当前行的数字等于左上方的数字与上方数字之和
 - 状态转移方程: dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j]
 - 初始化: 第一列和对角线是1,即 dp[i][0] = 1, dp[i][i] = 1
@@ -51,12 +68,28 @@ var generate = function (numRows) {
     return arr;
 };
 ```
+- 行更新，依靠上一行的前一个和当前的这个更新当前这行的值
+```js
+var generate = function (numRows) {
+    const res = [];
+    let row = [1];
+    for (let i = 0; i < numRows; i++) {
+        res.push([...row]);
+        for (let j = row.length - 1; j > 0; j--) {
+            row[j] = row[j] + row[j - 1];
+        }
+        row.push(1);
+    }
+    return res;
+};
+```
+
 198. 打家劫舍
 你是一个专业的小偷，计划偷窃沿街的房屋。每间房内都藏有一定的现金，影响你偷窃的唯一制约因素就是相邻的房屋装有相互连通的防盗系统，如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警。
 
 给定一个代表每个房屋存放金额的非负整数数组，计算你 不触动警报装置的情况下 ，一夜之内能够偷窃到的最高金额。
 
-- 动态规划 **数组表示当前房屋能够偷到的最高金额** 是在 前一个房间能够偷到的最高金额和上上个房间能够偷到的最高金额+当前房屋的金额 之中的最大值
+- 动态规划 **数组表示当前房屋能够偷到的最高金额** 是在 前一个房间能够偷到的最高金额和上上个房间能够偷到的最高金额 + 当前房屋的金额 之中的最大值
 - 状态转移方程: dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[i])
 - 初始化: dp[0] = nums[0], dp[1] = Math.max(nums[0], nums[1])
 - 遍历顺序: 从前往后
@@ -71,6 +104,21 @@ var rob = function (nums) {
     return dp[n - 1];
 };
 ```
+- 优化 靠两个数来记录前一个房屋的最大值和前前一个房屋的最大值
+```js
+var rob = function (nums) {
+    const n = nums.length;
+    if (n === 1) return nums[0];
+    let prev1 = nums[0], prev2 = Math.max(nums[0], nums[1]);
+    for (let i = 2; i < n; i++) {
+        let cur = Math.max(prev1, prev2 + nums[i]);
+        prev2 = prev1;
+        prev1 = cur;
+    }
+    return prev1;
+};
+```
+
 279. 完全平方数
 给你一个整数 n ，返回 和为 n 的完全平方数的最少数量 。
 
@@ -565,6 +613,29 @@ var longestCommonSubsequence = function (text1, text2) {
     return dp[m][n];
 };
 ```
+- 优化空间
+```js
+var longestCommonSubsequence = function (text1, text2) {
+    const m = text1.length, n = text2.length;
+    if (n > m) return longestCommonSubsequence(text2, text1);
+    const dp = Array(n + 1).fill(0);
+
+    for (let i = 1; i <= m; i++) {
+        let prev = 0;
+        for (let j = 1; j <= n; j++) {
+            let temp = dp[j];
+            if (text1[i - 1] === text2[j - 1]) {
+                dp[j] = prev + 1;
+            } else {
+                dp[j] = Math.max(dp[j], dp[j - 1]);
+            }
+            prev = temp;
+        }
+    }
+    return dp[n];
+};
+``` 
+
 72. 编辑距离
 给你两个单词 word1 和 word2， 请返回将 word1 转换成 word2 所使用的最少操作数  。
 

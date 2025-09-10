@@ -17,7 +17,7 @@ var firstMissingPositive = function (nums) {
       nums[i] !== i + 1
     ) {
       const j = nums[i] - 1
-      ;[nums[i], nums[j]] = [nums[j], nums[i]]
+      [nums[i], nums[j]] = [nums[j], nums[i]]
     }
   }
 
@@ -181,27 +181,30 @@ var merge = function (intervals) {
   return intervals.slice(0, i)
 }
 ```
+
 189. 轮转数组
-给定一个整数数组 nums，将数组中的元素向右轮转 k 个位置，其中 k 是非负数。
-- 最好的思路就是反转三次，1.整体反转2.前k个反转3.后n-k个反转 就能得到轮转后的数组
+     给定一个整数数组 nums，将数组中的元素向右轮转 k 个位置，其中 k 是非负数。
+
+- 最好的思路就是反转三次，1.整体反转 2.前 k 个反转 3.后 n-k 个反转 就能得到轮转后的数组
+
 ```js
 var rotate = function (nums, k) {
-    const n = nums.length;
-    if (n === 0 || k === 0) return; // 避免除零错误（如果数组为空）// 如果 k 是 n 的倍数，无需旋转
-    k = k % n;
-    // 1.整体反转
-    reverseArr(nums, 0, n - 1);
-    // 2.前k个反转
-    reverseArr(nums, 0, k - 1);
-    // 3.后n-k个反转
-    reverseArr(nums, k, n - 1);
-};
+  const n = nums.length
+  if (n === 0 || k === 0) return // 避免除零错误（如果数组为空）// 如果 k 是 n 的倍数，无需旋转
+  k = k % n
+  // 1.整体反转
+  reverseArr(nums, 0, n - 1)
+  // 2.前k个反转
+  reverseArr(nums, 0, k - 1)
+  // 3.后n-k个反转
+  reverseArr(nums, k, n - 1)
+}
 
 function reverseArr(arr, start, end) {
-    while (start < end) {
-        const temp = arr[start];
-        arr[start++] = arr[end];
-        arr[end--] = temp;
-    }
+  while (start < end) {
+    const temp = arr[start]
+    arr[start++] = arr[end]
+    arr[end--] = temp
+  }
 }
 ```

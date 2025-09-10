@@ -128,45 +128,55 @@ var maxSlidingWindow = function(nums, k) {
 
 - 方法：滑动窗口 + 哈希表
 使用滑动窗口技术结合哈希表统计字符频率，动态扩展和收缩窗口以寻找最优解。
+用两个哈希表 / Map：
+
+need：记录目标字符串 t 中每个字符需要的次数
+
+window：记录当前窗口中字符的次数
+
+用一个 valid 变量，记录窗口中有多少个字符的次数已经满足 need。
+
+当 valid === need.size 时，说明窗口已经完全覆盖了 t。
+
+然后尝试收缩左边界，找最小长度。
 ```js
 var minWindow = function (s, t) {
-    const need = {};// t的字符频率
-    const window = {}; // 滑动窗口内的字符频率
+    const need = new Map();
+    const window = new Map();
 
     for (const c of t) {
-        need[c] = (need[c] || 0) + 1; 
+        need.set(c, (need.get(c) || 0) + 1);
     }
 
     let left = 0, right = 0;
     let valid = 0;
-    let minLen = Infinity, start = 0;
+    let start = 0, len = Infinity;
 
     while (right < s.length) {
         const c = s[right];
         right++;
-
-        if (need[c]) {
-            window[c] = (window[c] || 0) + 1;
-            if (window[c] === need[c]) {
+        if (need.has(c)) {
+            window.set(c, (window.get(c) || 0) + 1);
+            if (window.get(c) === need.get(c)) {
                 valid++;
             }
         }
 
-        while (valid === Object.keys(need).length) {
-            if (right - left < minLen) {
-                minLen = right - left;
+        while (valid === need.size) {
+            if (right - left < len) {
                 start = left;
+                len = right - left;
             }
             const d = s[left];
             left++;
-            if (need[d]){
-                if (window[d] === need[d]) {
+            if (need.has(d)) {
+                if (window.get(d) === need.get(d)) {
                     valid--;
                 }
-                window[d]--;
+                window.set(d, window.get(d) - 1);
             }
         }
     }
-    return minLen === Infinity ? '' : s.substr(start, minLen);
+    return len === Infinity ? "" : s.substring(start, start + len);
 };
 ```

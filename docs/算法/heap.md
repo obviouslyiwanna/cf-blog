@@ -36,6 +36,28 @@ var findKthLargest = function (nums, k) {
 
 347. 前 K 个高频元素
 给你一个整数数组 nums 和一个整数 k ，请你返回其中出现频率前 k 高的元素。你可以按 任意顺序 返回答案。
+- 先去统计每个元素的频率，记录在一个map中，然后再把具有相同频率的元素放在一个桶里
+```js
+var topKFrequent = function (nums, k) {
+    const count = new Map();
+    for (const x of nums) {
+        count.set(x, (count.get(x) ?? 0) + 1);
+    }
+    const maxCount = Math.max(...count.values());
+
+    const buckets = Array.from({ length: maxCount + 1 }, () => []);
+    for (const [x, c] of count.entries()) {
+        buckets[c].push(x);
+    }
+
+    const ans = [];
+    for (let i = maxCount; i >= 0 && ans.length < k; i--) {
+        ans.push(...buckets[i]);
+    }
+    return ans;
+};
+```
+
 - 最小堆
 ```js
 class MinHeap {
@@ -146,7 +168,16 @@ medianFinder.findMedian(); // 返回 1.5 ((1 + 2) / 2)
 medianFinder.addNum(3);    // arr[1, 2, 3]
 medianFinder.findMedian(); // return 2.0
 
-- left 是最大堆，right 是最小堆。
+- 对顶堆，left 是最大堆，right 是最小堆。
+
+- 维护两个堆，left 是最大堆，right 是最小堆。
+- 当 left 为空时，直接将 num 加入 left。
+- 当 left 不为空时，判断 num 是否大于 left 的堆顶。
+  - 如果大于，将 num 加入 right。
+  - 如果小于等于，将 num 加入 left。
+- 当 left 的大小大于 right 的大小加 1 时，将 left 的堆顶加入 right。
+- 当 left 的大小小于 right 的大小时，将 right 的堆顶加入 left。
+
 
 如果当前有奇数个元素，中位数是 left 的堆顶。
 如果当前有偶数个元素，中位数是 left 的堆顶和 right 的堆顶的平均值。
