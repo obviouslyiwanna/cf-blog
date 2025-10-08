@@ -104,3 +104,28 @@ var trap = function(height) {
     return ans;
 };
 ```
+- 单调栈解法
+```js
+var trap = function (height) {
+    let stack = [];
+    let ans = 0;
+    const n = height.length;
+    stack.push(0);
+
+    for (let i = 1; i < n; i++) {
+        while (stack.length && height[i] > height[stack[stack.length - 1]]) {
+            const mid = stack.pop();
+            if (!stack.length) break;
+            const left = stack[stack.length - 1];
+            const right = i;
+
+            const curHeight = Math.min(height[left], height[right]) - height[mid];
+            const curWidth = right - left - 1;
+            ans += curHeight * curWidth;
+        }
+        stack.push(i);
+    }
+    return ans;
+};
+```
+
